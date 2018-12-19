@@ -2,10 +2,6 @@ import { Checkbox, Icon, MediaObject, PageHeader } from '@salesforce/design-syst
 import IconSettings from '@salesforce/design-system-react/components/icon-settings';
 import * as React from 'react';
 import '../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.css';
-
-// import '../node_modules/react-widgets/dist/css/react-widgets.css'
-
-// import AcquireVSCode from './acquire';
 import './App.css';
 
 // tslint:disable-next-line:no-var-requires
@@ -15,15 +11,10 @@ interface IAppProps { compiler?: object, framework?: string; }
 
 class App extends React.Component<IAppProps, {}> {
 
-  public colors = ['orange', 'red', 'blue', 'purple']
-  // private vsc = new AcquireVSCode();
-
   public componentDidMount() {
     window.addEventListener('message', (ev) => {
-      // 
       // tslint:disable-next-line:no-console
       console.log('Got message in App.tsx');
-       
     });
   };
 
