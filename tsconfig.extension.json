@@ -9,10 +9,12 @@
         ],
         "sourceMap": true,
         "rootDir": ".",
-        "strict": true
+        "strict": true,
+        "jsx": "react"
 	},
 	"include": [
-		"ext-src"
+        "ext-src",
+        "src"
 	],
     "exclude": [
         "node_modules",

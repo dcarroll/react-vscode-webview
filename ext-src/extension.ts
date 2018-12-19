@@ -1,11 +1,11 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
-
+ 
 export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('react-webview.start', () => {
 		ReactPanel.createOrShow(context.extensionPath);
-	}));
+	})); 
 }
 
 /**
@@ -59,11 +59,20 @@ class ReactPanel {
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(message => {
 			switch (message.command) {
-				case 'alert':
+				case 'options':
 					vscode.window.showErrorMessage(message.text);
 					return;
+				case "newoption":
+					vscode.window.showInformationMessage(message.data.msg);
+					return;
+				case "viewinitialized":
+					vscode.window.showInformationMessage(message.data.msg);
+					return;
 			}
+			console.log('Got a message from the webview');
 		}, null, this._disposables);
+
+		this._panel.webview.postMessage({ type: 'fromextensions', dirs: 'none found' });
 	}
 
 	public doRefactor() {
@@ -85,16 +94,19 @@ class ReactPanel {
 			}
 		}
 	}
-
+ 
 	private _getHtmlForWebview() {
 		const manifest = require(path.join(this._extensionPath, 'build', 'asset-manifest.json'));
 		const mainScript = manifest['main.js'];
+		const loaderScript = 'loader.js';
 		const mainStyle = manifest['main.css'];
 
 		const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'build', mainScript));
 		const scriptUri = scriptPathOnDisk.with({ scheme: 'vscode-resource' });
 		const stylePathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'build', mainStyle));
 		const styleUri = stylePathOnDisk.with({ scheme: 'vscode-resource' });
+		const loaderPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'build', 'src', loaderScript));
+		const loaderUri = loaderPathOnDisk.with({ scheme: 'vscode-resource' });
 
 		// Use a nonce to whitelist which scripts can be run
 		const nonce = getNonce();
@@ -107,14 +119,14 @@ class ReactPanel {
 				<meta name="theme-color" content="#000000">
 				<title>React App</title>
 				<link rel="stylesheet" type="text/css" href="${styleUri}">
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
+				
 				<base href="${vscode.Uri.file(path.join(this._extensionPath, 'build')).with({ scheme: 'vscode-resource' })}/">
 			</head>
 
 			<body>
 				<noscript>You need to enable JavaScript to run this app.</noscript>
 				<div id="root"></div>
-				
+				<script nonce="${nonce}" src="${loaderUri}"></script>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;

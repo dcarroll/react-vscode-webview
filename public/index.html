@@ -20,6 +20,16 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <script>
+      console.log('Index location: ' + window.document.location);
+      debugger;
+      window.onmessage = function(evt) {
+        console.log(JSON.stringify(evt, null, 4));
+      }
+      window.addEventListener('message', (event) => {
+        console.log('Recieved event on index.html\n' + JSON.stringify(event.data, null, 4));
+      });
+    </script>
   </head>
   <body>
     <noscript>

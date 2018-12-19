@@ -9,11 +9,11 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": ".",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
@@ -25,7 +25,7 @@
     "acceptance-tests",
     "webpack",
     "jest",
-	"src/setupTests.ts",
-	".vscode-test"
+	  "src/setupTests.ts",
+	  ".vscode-test"
   ]
 }
